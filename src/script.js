@@ -13,7 +13,6 @@ const gui = new GUI()
 
 let controlPanelOpen = true;
 
-// Function to toggle control panel
 const toggleControlPanel = () => {
     if (controlPanelOpen) {
         gui.close();
@@ -23,7 +22,7 @@ const toggleControlPanel = () => {
     controlPanelOpen = !controlPanelOpen;
 };
 
-// Event listener for keydown events
+
 document.addEventListener('keydown', (event) => {
     if (event.key === 'o') {
         toggleControlPanel();
@@ -182,7 +181,6 @@ const tick = () =>
     // Render
     renderer.render(scene, camera)
 
-    // Call tick again on the next frame
     window.requestAnimationFrame(tick)
 }
 
