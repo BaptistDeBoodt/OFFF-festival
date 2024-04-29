@@ -11,6 +11,25 @@ import gsap from 'gsap'
 // Debug
 const gui = new GUI()
 
+let controlPanelOpen = true;
+
+// Function to toggle control panel
+const toggleControlPanel = () => {
+    if (controlPanelOpen) {
+        gui.close();
+    } else {
+        gui.open();
+    }
+    controlPanelOpen = !controlPanelOpen;
+};
+
+// Event listener for keydown events
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'o') {
+        toggleControlPanel();
+    }
+});
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -57,6 +76,8 @@ const ambientLightIntensityControl = gui.add(ambientLight, 'intensity', 0, 5).na
 ambientLightIntensityControl.onChange((value) => {
     ambientLight.intensity = value
 })
+
+
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1.8)
 directionalLight.castShadow = true
@@ -118,6 +139,23 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setClearColor(0xFFC0CB)
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+// Add controls for directional light position
+const lightFolder = gui.addFolder('Directional Light');
+const lightPosition = { x: 5, y: 5, z: 5 }; // Initial light position
+const lightXControl = lightFolder.add(lightPosition, 'x', -10, 10).name('Light X Position');
+const lightYControl = lightFolder.add(lightPosition, 'y', -10, 10).name('Light Y Position');
+const lightZControl = lightFolder.add(lightPosition, 'z', -10, 10).name('Light Z Position');
+lightFolder.open(); // Open the folder by default
+
+// Function to update light position
+const updateLightPosition = () => {
+    directionalLight.position.set(lightPosition.x, lightPosition.y, lightPosition.z);
+};
+
+// Event listeners for light position controls
+lightXControl.onChange(updateLightPosition);
+lightYControl.onChange(updateLightPosition);
+lightZControl.onChange(updateLightPosition);
 
 /**
  * Animate
